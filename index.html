@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bia — Sua SDR Digital para a CRAF | Amanda Fitas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine:#683B4A; --wine2:#9B5E72; --ink:#37252B; --muted:#816A71;
+    --blush:#FBF4F5; --blush2:#F4E7EB; --rose:#E7DADE; --linha:#EFE2E6;
+    --gold:#B08D6A; --green:#65FF68; --branco:#fff;
+    --serif:'Playfair Display',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif;
+    --wgrad:linear-gradient(135deg,#683B4A 0%,#8A4E63 55%,#9B5E72 100%);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+  section{padding:84px 0;position:relative}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--wine);background:var(--blush2);padding:8px 16px;border-radius:8px;margin-bottom:22px}
+  h2{font-family:var(--serif);font-size:46px;font-weight:700;letter-spacing:-.01em;line-height:1.12;margin-bottom:16px;color:var(--ink)}
+  h2 .hl{color:var(--wine);font-style:italic;font-weight:600}
+  .sub{font-size:18px;color:var(--muted);max-width:640px;margin-bottom:48px}
+  .center{text-align:center}.center .sub{margin-left:auto;margin-right:auto}
+  .spark{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:30px;color:var(--gold)}
+  .spark::before,.spark::after{content:"";height:1px;width:70px;background:linear-gradient(90deg,transparent,var(--gold))}
+  .spark::after{background:linear-gradient(90deg,var(--gold),transparent)}
+  .spark span{font-size:18px}
+
+  .orb{position:absolute;border-radius:50%;filter:blur(75px);opacity:.4;z-index:0;pointer-events:none}
+  .reveal{transition:opacity .7s ease,transform .7s ease}
+  .js .reveal{opacity:0;transform:translateY(26px)}
+  .js .reveal.in{opacity:1;transform:none}
+
+  /* HERO */
+  .hero{background:linear-gradient(180deg,#FBF4F5 0%,#F6E9ED 100%);padding:64px 0 84px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(155,94,114,.22),transparent 70%);right:-120px;top:-120px}
+  .hero .wrap{display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center}
+  .badge{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--linha);color:var(--wine);padding:9px 18px;border-radius:100px;font-weight:600;font-size:13.5px;margin-bottom:26px;box-shadow:0 4px 14px -8px rgba(104,59,74,.35)}
+  .dot{width:9px;height:9px;border-radius:50%;background:#2fbf5a;box-shadow:0 0 0 4px rgba(47,191,90,.18);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(47,191,90,.18)}50%{box-shadow:0 0 0 8px rgba(47,191,90,.03)}}
+  .hero h1{font-family:var(--serif);font-size:62px;font-weight:800;letter-spacing:-.02em;line-height:1.04;margin-bottom:20px;color:var(--ink)}
+  .hero h1 em{color:var(--wine);font-style:italic;font-weight:600}
+  .hero p.lead{font-size:19.5px;max-width:540px;color:var(--muted)}
+  .hero .meta{display:flex;gap:11px;flex-wrap:wrap;margin-top:32px}
+  .chip{background:#fff;border:1px solid var(--linha);padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;color:var(--ink)}
+
+  /* PHONE MOCKUP */
+  .phone{width:312px;justify-self:center;background:#241319;border-radius:42px;padding:12px;box-shadow:0 44px 80px -24px rgba(55,37,43,.55),0 0 0 2px rgba(255,255,255,.05);position:relative}
+  .phone .notch{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#241319;border-radius:0 0 16px 16px;z-index:5}
+  .screen{background:#EDE4E0;border-radius:32px;overflow:hidden;height:560px;display:flex;flex-direction:column}
+  .wahead{background:var(--wgrad);color:#fff;padding:34px 16px 12px;display:flex;align-items:center;gap:11px}
+  .ava{width:40px;height:40px;border-radius:50%;background:#fff;color:var(--wine);font-weight:800;display:grid;place-items:center;font-size:18px;font-family:var(--serif);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+  .wahead .nm{font-weight:700;font-size:15px;line-height:1.1}
+  .wahead .on{font-size:11.5px;opacity:.85}
+  .wabody{flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:8px;overflow:hidden;
+     background:linear-gradient(rgba(237,228,224,.7),rgba(237,228,224,.7)),repeating-linear-gradient(45deg,#e2d6d2 0 2px,transparent 2px 9px)}
+  .bub{max-width:80%;padding:8px 11px;border-radius:14px;font-size:12.6px;line-height:1.45;box-shadow:0 1px 1px rgba(0,0,0,.07);position:relative;color:var(--ink)}
+  .in{background:#fff;align-self:flex-start;border-top-left-radius:4px}
+  .out{background:#F3DCE4;align-self:flex-end;border-top-right-radius:4px}
+  .bub .tm{display:block;text-align:right;font-size:9.5px;color:#a18f95;margin-top:2px}
+  .tick{color:#5a9bd6;font-weight:700}
+  .typing{align-self:flex-start;background:#fff;padding:10px 13px;border-radius:14px;border-top-left-radius:4px;display:flex;gap:4px}
+  .typing i{width:6px;height:6px;border-radius:50%;background:#c6b8bd;display:inline-block;animation:bounce 1.3s infinite}
+  .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+
+  .grid{display:grid;gap:22px}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:#fff;border:1px solid var(--linha);border-radius:18px;padding:30px;transition:transform .25s,box-shadow .25s}
+  .card:hover{transform:translateY(-6px);box-shadow:0 24px 50px -26px rgba(104,59,74,.4)}
+  .card .ico{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;margin-bottom:18px;background:var(--blush2)}
+  .card .ico svg{width:26px;height:26px;stroke:var(--wine)}
+  .card h3{font-size:18px;font-weight:700;margin-bottom:7px}.card p{font-size:15px;color:var(--muted)}
+
+  /* JORNADA */
+  .journey{background:var(--blush);border:1px solid var(--linha);border-radius:28px;padding:54px 44px;position:relative;overflow:hidden}
+  .step{display:flex;gap:24px;align-items:flex-start;position:relative;padding-bottom:32px}
+  .step:not(:last-child)::before{content:"";position:absolute;left:25px;top:54px;bottom:-4px;width:2px;background:linear-gradient(var(--wine),var(--wine2));opacity:.3}
+  .num{flex:0 0 52px;height:52px;border-radius:50%;background:var(--wgrad);color:#fff;font-family:var(--serif);font-weight:700;font-size:21px;display:grid;place-items:center;box-shadow:0 8px 20px -6px rgba(104,59,74,.55);z-index:2}
+  .step h3{font-size:19px;font-weight:700;margin-bottom:4px}.step p{color:var(--muted);font-size:15.5px}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+  .mini{background:#fff;border:1px solid var(--linha);border-radius:14px;padding:18px 20px}
+  .mini .t{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;margin-bottom:4px}.mini p{font-size:14px;color:var(--muted)}
+
+  /* FAZ/NÃO FAZ */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .panel{border-radius:20px;padding:34px;border:1px solid var(--linha)}
+  .panel.yes{background:linear-gradient(180deg,#FBF1F4,#fff)}
+  .panel.no{background:linear-gradient(180deg,#F7EEEA,#fff)}
+  .panel h3{font-family:var(--serif);font-size:23px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+  .li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid rgba(104,59,74,.08);font-size:15.5px}
+  .li:first-of-type{border-top:none}
+  .tk{flex:0 0 24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;color:#fff;margin-top:1px}
+  .tk.v{background:var(--wine)}.tk.x{background:var(--gold)}
+
+  /* IMPACTO */
+  .impact{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .funnel{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .tier{color:#fff;font-weight:700;padding:18px;border-radius:12px;text-align:center;box-shadow:0 12px 26px -14px rgba(104,59,74,.55);display:flex;flex-direction:column;gap:2px}
+  .tier small{font-weight:400;opacity:.92;font-size:12.5px}
+  .t1{width:100%;background:linear-gradient(135deg,#683B4A,#8A4E63)}
+  .t2{width:78%;background:linear-gradient(135deg,#8A4E63,#9B5E72)}
+  .t3{width:54%;background:linear-gradient(135deg,#9B5E72,#B5707F)}
+  .bars .bar-row{margin-bottom:20px}
+  .bars .bl{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:7px}
+  .track{height:13px;background:var(--blush2);border-radius:10px;overflow:hidden}
+  .fill{height:100%;border-radius:10px;background:var(--wgrad);width:0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+  .fill.slim{background:#E3D2D8}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
+  .stat{background:var(--wgrad);color:#fff;border-radius:20px;padding:32px;text-align:center;position:relative;overflow:hidden}
+  .stat::after{content:"";position:absolute;width:120px;height:120px;background:rgba(255,255,255,.1);border-radius:50%;top:-40px;right:-30px}
+  .stat .big{font-family:var(--serif);font-size:46px;font-weight:700;line-height:1}
+  .stat .lbl{font-size:14.5px;opacity:.92;margin-top:8px}
+
+  .brain{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .bcard{border:1px solid var(--linha);border-radius:18px;padding:30px;background:#fff}
+  .bcard .ico{width:50px;height:50px;border-radius:13px;background:var(--blush2);display:grid;place-items:center;margin-bottom:14px}
+  .bcard .ico svg{width:24px;height:24px;stroke:var(--wine)}
+  .bcard h3{font-size:17px;font-weight:700;margin-bottom:6px}.bcard p{font-size:14.5px;color:var(--muted)}
+
+  /* NEED */
+  .need{background:var(--ink);color:#fff;border-radius:26px;padding:52px 46px;position:relative;overflow:hidden}
+  .need h2{color:#fff}.need h2 .hl{color:#E9B7C6}.need .sub{color:rgba(255,255,255,.65)}
+  .need .eyebrow{background:rgba(255,255,255,.1);color:#F0D9E0}
+  .needgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+  .needitem{display:flex;gap:13px;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:16px 20px;font-weight:500;font-size:15.5px}
+  .needitem .k{flex:0 0 32px;height:32px;border-radius:9px;background:var(--wgrad);display:grid;place-items:center}
+  .needitem .k svg{width:17px;height:17px;stroke:#fff}
+
+  .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .tl{padding:26px;border:1px solid var(--linha);border-radius:16px;background:#fff}
+  .tl .n{width:38px;height:38px;border-radius:50%;background:var(--blush2);color:var(--wine);font-family:var(--serif);font-weight:700;display:grid;place-items:center;margin-bottom:14px}
+  .tl h3{font-size:16px;font-weight:700;margin-bottom:5px}.tl p{font-size:14px;color:var(--muted)}
+
+  footer{background:var(--wgrad);color:#fff;padding:66px 0;text-align:center;position:relative;overflow:hidden}
+  footer .spark{color:rgba(255,255,255,.55)}
+  footer .spark::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.55))}
+  footer .spark::after{background:linear-gradient(90deg,rgba(255,255,255,.55),transparent)}
+  footer .brand{font-family:var(--serif);font-weight:700;font-size:30px;margin-bottom:10px}
+  footer p{color:rgba(255,255,255,.9);max-width:560px;margin:0 auto}
+  .cta{display:inline-block;background:var(--green);color:#10130f;font-weight:700;padding:16px 34px;border-radius:10px;font-size:15px;letter-spacing:.04em;text-transform:uppercase;margin-top:24px;box-shadow:0 14px 30px -10px rgba(0,0,0,.4)}
+
+  @media(max-width:880px){
+    .hero .wrap,.impact,.g3,.g4,.duo,.stats,.brain,.needgrid,.timeline,.split{grid-template-columns:1fr}
+    .hero h1{font-size:42px}h2{font-size:32px}.journey{padding:34px 22px}.need{padding:36px 24px}
+    .phone{margin-top:12px}.stats{margin-top:30px}
+  }
+  @media print{
+    @page{size:1240px 1680px;margin:0}
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+    .card:hover{transform:none}section{padding:56px 0}.fill{width:var(--w) !important;transition:none}
+    .reveal,.js .reveal{opacity:1 !important;transform:none !important}
+    .card,.panel,.bcard,.tl,.stat,.mini,.needitem,.tier{break-inside:avoid}
+    .journey,.need{break-inside:avoid}
+    .hero{padding:60px 0}
+    /* força layout desktop no PDF, independente da largura do render */
+    .hero .wrap{grid-template-columns:1.08fr .92fr !important}
+    .g4{grid-template-columns:repeat(4,1fr) !important}
+    .g3,.stats,.brain{grid-template-columns:repeat(3,1fr) !important}
+    .duo,.impact,.needgrid,.split{grid-template-columns:1fr 1fr !important}
+    .timeline{grid-template-columns:repeat(4,1fr) !important}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="badge"><span class="dot"></span> Projeto de Automação · Time Comercial CRAF</div>
+      <h1>Conheça a <em>Bia</em>,<br>sua SDR digital</h1>
+      <p class="lead">Ela conversa no WhatsApp com cada interessada na CRAF, entende o momento dela e leva as candidatas certas até o agendamento — 24h por dia, sem deixar nenhum lead esfriar.</p>
+      <div class="meta">
+        <div class="chip">💬 WhatsApp</div>
+        <div class="chip">🎯 Qualifica &amp; agenda</div>
+        <div class="chip">🔁 Follow-up</div>
+        <div class="chip">🌙 24/7</div>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="wahead"><div class="ava">B</div><div><div class="nm">Bia · Time Amanda Fitas</div><div class="on">● online agora</div></div></div>
+        <div class="wabody">
+          <div class="bub out">Oi! Acabei de preencher a aplicação da CRAF 💜<span class="tm">09:41 <span class="tick">✓✓</span></span></div>
+          <div class="bub in">Oi, Marina! Que bom que você veio 😊 Vi sua aplicação aqui. Posso te fazer só algumas perguntinhas pra entender seu momento?<span class="tm">09:41</span></div>
+          <div class="bub out">Pode sim!<span class="tm">09:42 <span class="tick">✓✓</span></span></div>
+          <div class="bub in">Você já atende como terapeuta, ou tá começando agora essa jornada?<span class="tm">09:42</span></div>
+          <div class="bub out">Tô começando, mas é o que eu mais quero 🙏<span class="tm">09:43 <span class="tick">✓✓</span></span></div>
+          <div class="bub in">Amei! É exatamente pra isso que a CRAF existe 💜 O próximo passo é uma sessão de diagnóstico com o time. Posso te mandar o link pra escolher um horário?<span class="tm">09:43</span></div>
+          <div class="typing"><i></i><i></i><i></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- PROBLEMA -->
+<section>
+  <div class="wrap center reveal">
+    <div class="spark"><span>✦</span></div>
+    <span class="eyebrow">O que travava antes</span>
+    <h2>Cada lead que esfria é <span class="hl">uma aluna que se perde</span></h2>
+    <p class="sub">Quando alguém preenche a aplicação ou o quiz da CRAF, o tempo corre contra a conversão. Quatro gargalos custam caro:</p>
+  </div>
+  <div class="wrap grid g4 reveal">
+    <div class="card"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Demora no contato</h3><p>Quanto mais tempo até a 1ª resposta, mais frio o lead fica.</p></div>
+    <div class="card"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div><h3>Triagem manual</h3><p>Alguém lê cada aplicação e responde uma a uma, à mão.</p></div>
+    <div class="card"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 3v6h6"/></svg></div><h3>Leads que somem</h3><p>Quem não responde de primeira raramente recebe follow-up.</p></div>
+    <div class="card"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div><h3>Foco errado</h3><p>Time gasta energia com quem ainda não está pronto.</p></div>
+  </div>
+</section>
+
+<!-- JORNADA -->
+<section style="padding-top:10px">
+  <div class="wrap">
+    <div class="center reveal"><span class="eyebrow">Como funciona</span>
+    <h2>A jornada de um lead, <span class="hl">do "oi" ao agendamento</span></h2>
+    <p class="sub">Tudo automático, com a voz e o método da Amanda em cada mensagem.</p></div>
+    <div class="journey reveal">
+      <span class="orb" style="width:240px;height:240px;background:var(--wine2);right:-60px;top:-60px"></span>
+      <div class="step"><div class="num">1</div><div><h3>A pessoa demonstra interesse</h3><p>Preenche a <b>aplicação</b> ou responde o <b>quiz</b> da CRAF.</p></div></div>
+      <div class="step"><div class="num">2</div><div><h3>É levada ao WhatsApp da Bia</h3><p>Com uma mensagem pronta — ela inicia a conversa, criando vínculo desde o primeiro toque.</p></div></div>
+      <div class="step"><div class="num">3</div><div><h3>A Bia já sabe quem é</h3><p>Reconhece a pessoa e o que respondeu, e puxa conversa de forma natural.</p></div></div>
+      <div class="step"><div class="num">4</div><div><h3>Entende o momento dela</h3><p>Com perguntas leves, descobre objetivo, experiência e prontidão — seguindo o Guia de Qualificação do seu time.</p>
+        <div class="split">
+          <div class="mini"><div class="t">✅ Tem perfil CRAF</div><p>Conduz até <b>agendar a sessão de diagnóstico</b> com o seu time.</p></div>
+          <div class="mini"><div class="t">🌱 Ainda não é o momento</div><p>Apresenta o <b>CDD</b> como o passo certo agora — sem fechar a porta.</p></div>
+        </div></div></div>
+      <div class="step"><div class="num">5</div><div><h3>Follow-up até converter</h3><p>Quem não respondeu, não agendou ou faltou recebe lembretes na medida — com leveza, nunca insistência.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAZ/NÃO FAZ -->
+<section style="padding-top:10px">
+  <div class="wrap center reveal"><span class="eyebrow">Limites claros</span>
+  <h2>O que a Bia faz — <span class="hl">e o que não faz</span></h2></div>
+  <div class="wrap duo reveal">
+    <div class="panel yes"><h3>✨ A Bia faz</h3>
+      <div class="li"><span class="tk v">✓</span> Atende na hora, a qualquer horário</div>
+      <div class="li"><span class="tk v">✓</span> Qualifica seguindo o guia do seu time</div>
+      <div class="li"><span class="tk v">✓</span> Agenda a sessão das candidatas certas</div>
+      <div class="li"><span class="tk v">✓</span> Direciona para o CDD com cuidado</div>
+      <div class="li"><span class="tk v">✓</span> Faz follow-up em todos os estágios</div>
+      <div class="li"><span class="tk v">✓</span> Passa para um humano com resumo completo</div>
+    </div>
+    <div class="panel no"><h3>🚫 A Bia não faz</h3>
+      <div class="li"><span class="tk x">✕</span> Não fecha a venda nem cobra pagamento</div>
+      <div class="li"><span class="tk x">✕</span> Não inventa preço, condição ou promessa</div>
+      <div class="li"><span class="tk x">✕</span> Não trata ninguém com frieza</div>
+      <div class="li"><span class="tk x">✕</span> Não se passa pela Amanda</div>
+      <div class="li"><span class="tk x">✕</span> Não pressiona quem diz não</div>
+      <div class="li"><span class="tk x">✕</span> Não dá conselho clínico ou diagnóstico</div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACTO -->
+<section style="padding-top:10px">
+  <div class="wrap center reveal"><span class="eyebrow">O impacto</span>
+  <h2>Menos esforço, <span class="hl">mais sessões agendadas</span></h2>
+  <p class="sub">A Bia filtra e conduz cada lead — seu time recebe só quem está pronto para conversar.</p></div>
+  <div class="wrap impact reveal">
+    <div class="funnel">
+      <div class="tier t1">Leads que chegam<small>Aplicação + Quiz</small></div>
+      <div class="tier t2">Qualificados pela Bia<small>Triagem automática pelo seu guia</small></div>
+      <div class="tier t3">Sessões agendadas<small>Entregues prontas ao seu time</small></div>
+    </div>
+    <div class="bars">
+      <div class="bar-row"><div class="bl"><span>Velocidade de resposta</span><span>Imediata</span></div><div class="track"><div class="fill" style="--w:97%"></div></div></div>
+      <div class="bar-row"><div class="bl"><span>Leads aproveitados (com follow-up)</span><span>Alto</span></div><div class="track"><div class="fill" style="--w:88%"></div></div></div>
+      <div class="bar-row"><div class="bl"><span>Esforço manual do time</span><span>Mínimo</span></div><div class="track"><div class="fill slim" style="--w:22%"></div></div></div>
+      <div class="bar-row"><div class="bl"><span>Consistência da abordagem</span><span>Total</span></div><div class="track"><div class="fill" style="--w:100%"></div></div></div>
+    </div>
+  </div>
+  <div class="wrap stats reveal">
+    <div class="stat"><div class="big">24/7</div><div class="lbl">Atendimento sem pausa</div></div>
+    <div class="stat"><div class="big">0</div><div class="lbl">Leads esquecidos</div></div>
+    <div class="stat"><div class="big">100%</div><div class="lbl">Triagem padronizada</div></div>
+  </div>
+</section>
+
+<!-- INTELIGENCIA -->
+<section style="padding-top:10px">
+  <div class="wrap center reveal"><span class="eyebrow">A inteligência por trás</span>
+  <h2>Ela não responde <span class="hl">no improviso</span></h2>
+  <p class="sub">Guiada por três pilares — com trava de segurança: se não souber algo, ela não inventa.</p></div>
+  <div class="wrap brain reveal">
+    <div class="bcard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><h3>O guia do seu time</h3><p>A mesma árvore de decisão da qualificação, aplicada de forma automática e consistente.</p></div>
+    <div class="bcard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9-8.5A5 5 0 0 1 12 6a5 5 0 0 1 9 6.5C19 16.5 12 21 12 21z"/></svg></div><h3>O tom da Amanda</h3><p>Acolhedor, direto e honesto — a marca presente do primeiro contato ao agendamento.</p></div>
+    <div class="bcard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div><h3>Base atualizável</h3><p>Seu time edita preços, condições e respostas quando quiser, sem depender de programador.</p></div>
+  </div>
+</section>
+
+<!-- PROXIMOS PASSOS -->
+<section style="padding-top:10px">
+  <div class="wrap center reveal"><span class="eyebrow">O caminho</span><h2>Próximos <span class="hl">passos</span></h2></div>
+  <div class="wrap timeline reveal">
+    <div class="tl"><div class="n">1</div><h3>Validação</h3><p>Aprovar esta apresentação juntos.</p></div>
+    <div class="tl"><div class="n">2</div><h3>Construção</h3><p>Montar a Bia e os fluxos automáticos.</p></div>
+    <div class="tl"><div class="n">3</div><h3>Testes</h3><p>Simular leads reais em ambiente controlado.</p></div>
+    <div class="tl"><div class="n">4</div><h3>No ar</h3><p>Entrada em operação com acompanhamento.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="spark"><span>✦</span></div>
+    <div class="brand">Amanda Fitas</div>
+    <p>A Bia é o primeiro contato da sua marca com cada futura aluna. Desenhada para cuidar desse momento — com a sua voz, o seu método e o seu padrão.</p>
+    <div class="cta">Vamos colocar a Bia para trabalhar</div>
+  </div>
+</footer>
+
+<script>
+  document.documentElement.classList.add('js');
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  const bio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.fill').forEach(f=>f.style.width=f.style.getPropertyValue('--w'));bio.unobserve(e.target)}})},{threshold:.3});
+  document.querySelectorAll('.bars').forEach(el=>bio.observe(el));
+  window.addEventListener('load',()=>setTimeout(()=>document.querySelectorAll('.reveal:not(.in)').forEach(e=>e.classList.add('in')),2200));
+</script>
+</body>
+</html>
